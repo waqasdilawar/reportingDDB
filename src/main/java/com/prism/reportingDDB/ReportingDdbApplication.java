@@ -10,4 +10,6 @@ public class ReportingDdbApplication {
 		SpringApplication.run(ReportingDdbApplication.class, args);
 	}
 
+
+
 }
