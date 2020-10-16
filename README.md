@@ -1,5 +1,9 @@
 # Sample project for Reporting using DynamoDB
 
+### Start the local DynamoDB instance running in Docker
+`sudo docker run -d -p 8000:8000 amazon/dynamodb-local`
+
+Further information about running DynamoDB can be found [here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
 ### Populate the Customer Data
 For populating data in Customer:
 
