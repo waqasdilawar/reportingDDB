@@ -11,7 +11,7 @@ For populating data in Customer:
 `{
      "enterpriseId": "99991",
      "customerName": "Test Customer Name - 2",
-     "description": "Powerful gaming laptop - 1"
+     "description": "Description =  1"
  }`
 * Other way is to run `PopulateQueryCustomerList`
 
