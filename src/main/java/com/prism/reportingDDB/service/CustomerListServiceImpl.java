@@ -3,12 +3,14 @@ package com.prism.reportingDDB.service;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.prism.reportingDDB.CustomerListDao;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
+import com.prism.reportingDDB.dao.CustomerListDao;
 import com.prism.reportingDDB.domain.CustomerList;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.prism.reportingDDB.util.Utils.createTable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,30 +24,21 @@ public class CustomerListServiceImpl implements CustomerListService {
 
     @Override
     public List<CustomerList> getAll() {
-        /*
-        AmazonDynamoDB client = AmazonDynamoDBClientBuilder
-                .standard()
-                .build();
-*/
-
-        //itemDao.getAllUrgentMessages("2").getResults().forEach(shopItem -> System.out.println(shopItem));
-        // itemDao.getAllForEnterpriseId("9999").forEach(shopItem -> System.out.println(shopItem));
-        //  saveItems(itemDao);
-        // readItem(itemDao);
-
-        // itemDao.getAll().forEach(shopItem -> System.out.println(shopItem));
         return customerListDao().getAll();
     }
 
     @Override
     public void post(CustomerList customerList) {
-        System.out.println(                LocalDateTime.of(2019, 9, 15, 15, 53));
         customerListDao().post(customerList);
     }
 
     @Override
     public List<CustomerList> getAllForEnterpriseId(String enterpriseId) {
         return customerListDao().getAllForEnterpriseId(enterpriseId);
+    }
+
+    public QueryResultPage<CustomerList> getPageForEnterpriseId(String enterpriseId, Integer pageSize) {
+        return customerListDao().getPageForEnterpriseId(enterpriseId,pageSize);
     }
 
 
@@ -72,7 +65,7 @@ public class CustomerListServiceImpl implements CustomerListService {
                 new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
                 .build();
 
-//        createTable(CustomerList .class, client);
+        createTable(CustomerList .class, client);
 
         CustomerListDao itemDao = new CustomerListDao(client);
         return itemDao;

@@ -1,5 +1,6 @@
 package com.prism.reportingDDB.service;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.prism.reportingDDB.domain.CustomerList;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface CustomerListService {
     void post(CustomerList customerList);
 
     List<CustomerList> getAllForEnterpriseId(String enterpriseId);
+
+    QueryResultPage<CustomerList> getPageForEnterpriseId(String enterpriseId, Integer pageSize);
 }

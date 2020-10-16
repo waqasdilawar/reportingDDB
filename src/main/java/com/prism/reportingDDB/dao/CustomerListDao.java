@@ -1,4 +1,4 @@
-package com.prism.reportingDDB;
+package com.prism.reportingDDB.dao;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -106,18 +106,10 @@ public class CustomerListDao {
         DynamoDBQueryExpression<CustomerList> queryExpression =
                 new DynamoDBQueryExpression<CustomerList>()
                         .withKeyConditionExpression("id = :department")
-/*                        .withFilterExpression(
-                                "amount > :minUrgency OR contains(description, :substr)"
-                        )*/
                         .withExpressionAttributeValues(Map.of(
                                 ":department", new AttributeValue().withS(department)
-/*                                ":minUrgency", new AttributeValue().withN("500"),
-                                ":substr", new AttributeValue().withS("gaming")*/
                         ));
-        //TODO Pagination for DIS
-//        queryExpression.withLimit(10);
         return mapper.queryPage(CustomerList.class, queryExpression);
-        //  return mapper.query(SupportMessage.class, queryExpression);
     }
 
     public List<CustomerList> getAll() {
@@ -126,8 +118,6 @@ public class CustomerListDao {
 
 
     public List<CustomerList> getAllForEnterpriseId(String enterpriseId) {
-        List<CustomerList> scanResult = mapper.scan(CustomerList.class, new DynamoDBScanExpression());
-        System.out.println(scanResult.size());
         DynamoDBQueryExpression<CustomerList> queryExpression =
                 new DynamoDBQueryExpression<CustomerList>()
                         .withScanIndexForward(false)
@@ -137,6 +127,23 @@ public class CustomerListDao {
                         ));
 
         return mapper.query(CustomerList.class, queryExpression);
+    }
+
+    public QueryResultPage<CustomerList> getPageForEnterpriseId(String enterpriseId, Integer pageSize) {
+        DynamoDBQueryExpression<CustomerList> queryExpression =
+                new DynamoDBQueryExpression<CustomerList>()
+                        .withScanIndexForward(true)
+                        .withKeyConditionExpression("enterpriseId = :enterpriseId")
+                        .withFilterExpression(
+                                "contains(description, :customerId)"
+                        )
+                        .withExpressionAttributeValues(Map.of(
+                                ":enterpriseId", new AttributeValue().withS(enterpriseId),
+                                ":customerId", new AttributeValue().withS("Description")
+                        ))
+                        .withLimit(pageSize);
+
+        return mapper.queryPage(CustomerList.class, queryExpression);
     }
 
 }

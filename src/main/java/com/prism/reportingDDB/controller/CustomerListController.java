@@ -1,5 +1,6 @@
 package com.prism.reportingDDB.controller;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.prism.reportingDDB.domain.CustomerList;
 import com.prism.reportingDDB.service.CustomerListService;
 import lombok.NonNull;
@@ -26,13 +27,23 @@ public class CustomerListController {
     List<CustomerList> get() {
         return customerListService.getAll();
     }
+
     @GetMapping("{enterpriseId}")
     List<CustomerList> get(@PathVariable String enterpriseId) {
         return customerListService.getAllForEnterpriseId(enterpriseId);
     }
 
+    @GetMapping("{enterpriseId}/page")
+    QueryResultPage<CustomerList> getPage(@PathVariable String enterpriseId, @RequestParam Integer pageSize) {
+        return customerListService.getPageForEnterpriseId(enterpriseId, pageSize);
+    }
+
     @PostMapping
     void post(@RequestBody CustomerList customerList) {
-        customerListService.post(customerList);
+        for (int i = 0; i < 5000; i++) {
+            customerList.setCustomerId("CustomerId =" + i);
+            customerList.setDescription("Description =" + i);
+            customerListService.post(customerList);
+        }
     }
 }

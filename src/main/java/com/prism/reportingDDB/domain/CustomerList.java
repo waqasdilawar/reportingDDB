@@ -3,10 +3,6 @@ package com.prism.reportingDDB.domain;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import com.prism.reportingDDB.util.LocalDateTimeConverter;
-
-import java.time.LocalDateTime;
 
 @DynamoDBTable(tableName = "CustomerList")
 public class CustomerList {
@@ -14,6 +10,7 @@ public class CustomerList {
     @DynamoDBHashKey
     private String enterpriseId;
 
+    @DynamoDBRangeKey
     private String customerId;
 
     private String customerName;
@@ -64,11 +61,12 @@ public class CustomerList {
         this.customerId = customerId;
     }
 
+
     @Override
     public String toString() {
         return "CustomerList{" +
                 "enterpriseId='" + enterpriseId + '\'' +
-                ", customerId='" + customerName + '\'' +
+                ", customerId='" + customerId + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", description='" + description + '\'' +
                 '}';
